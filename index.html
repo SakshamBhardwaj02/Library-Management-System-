@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 text-center">
+        <h1 class="display-4 mb-4">Welcome to Library Management System</h1>
+        <p class="lead">Manage your library efficiently with our comprehensive solution</p>
+        
+        {% if not current_user.is_authenticated %}
+            <div class="mt-5">
+                <h3>Get Started</h3>
+                <p>Please log in to access the library system</p>
+                <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg">Login</a>
+            </div>
+        {% else %}
+            <div class="mt-5">
+                <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-lg">Go to Dashboard</a>
+            </div>
+        {% endif %}
+        
+        <div class="row mt-5">
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Book Management</h5>
+                        <p class="card-text">Easily add, update, and manage your book collection.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">User Management</h5>
+                        <p class="card-text">Manage library members and their borrowing privileges.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Loan Tracking</h5>
+                        <p class="card-text">Track book loans, due dates, and returns efficiently.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h2>My Dashboard</h2>
+        
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="mb-0">My Borrowed Books</h5>
+            </div>
+            <div class="card-body">
+                {% if loans %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Book Title</th>
+                                <th>Author</th>
+                                <th>Borrowed On</th>
+                                <th>Due Date</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for loan in loans %}
+                            <tr class="{% if loan.due_date < datetime.utcnow() %}table-danger{% endif %}">
+                                <td>{{ loan.book.title }}</td>
+                                <td>{{ loan.book.author }}</td>
+                                <td>{{ loan.loan_date.strftime('%Y-%m-%d') }}</td>
+                                <td>{{ loan.due_date.strftime('%Y-%m-%d') }}</td>
+                                <td>
+                                    {% if loan.due_date < datetime.utcnow() %}
+                                        <span class="text-danger">Overdue</span>
+                                    {% else %}
+                                        <span class="text-success">On Loan</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <form action="{{ url_for('return_book', loan_id=loan.id) }}" method="POST" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-primary">Return</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted">You don't have any borrowed books at the moment.</p>
+                <a href="{{ url_for('books') }}" class="btn btn-primary">Browse Books</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
